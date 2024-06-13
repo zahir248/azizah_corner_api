@@ -1,5 +1,8 @@
 <?php
 
+// Include the database connection file
+include 'db_connect.php';
+
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if the required parameters are set
@@ -8,20 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $customerId = $_POST['customer_id'];
         $productName = $_POST['name'];
         $productPrice = $_POST['price'];
-
-        // Database connection details
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "order";
-
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
 
         // Prepare SQL statement to insert product into cart table with customer_id
         $stmt = $conn->prepare("INSERT INTO cart (customer_id, name, price) VALUES (?, ?, ?)");
@@ -47,4 +36,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Invalid request method
     echo "Error: Invalid request method";
 }
+
 ?>

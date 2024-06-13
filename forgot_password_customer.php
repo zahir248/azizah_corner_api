@@ -1,18 +1,6 @@
 <?php
-
-// Assuming your database connection details
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "order";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include database connection
+include 'db_connect.php';
 
 // Handling POST request
 $data = json_decode(file_get_contents('php://input'), true);
@@ -71,7 +59,6 @@ if (isset($data['username']) && isset($data['email']) && isset($data['password']
     echo json_encode($response);
 }
 
-// Close connection
+// Close connection (if not already closed by db_connect.php)
 $conn->close();
-
 ?>

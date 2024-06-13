@@ -1,18 +1,9 @@
 <?php
 
-// Assuming your database connection details
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "order";
+header('Content-Type: application/json');
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include the database connection file
+include 'db_connect.php';
 
 // Handling POST request
 $data = json_decode(file_get_contents('php://input'), true);

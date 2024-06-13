@@ -1,17 +1,6 @@
 <?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "order";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $database);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include the database connection file
+include 'db_connect.php';
 
 $sql = "SELECT product_id, name, price, category, image FROM product"; // Include image column
 $result = $conn->query($sql);
@@ -29,8 +18,8 @@ if ($result->num_rows > 0) {
     header('Content-Type: application/json');
     echo json_encode($products);
 } else {
-    echo "0 results";
+    echo json_encode(array("message" => "No results found"));
 }
-$conn->close();
 
+$conn->close();
 ?>

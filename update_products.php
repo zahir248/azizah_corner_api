@@ -1,18 +1,9 @@
 <?php
+// Include the database connection file
+include 'db_connect.php';
+
+// Set content type to JSON
 header('Content-Type: application/json');
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "order";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // Decode the JSON data from the request body
 $data = json_decode(file_get_contents("php://input"));
@@ -33,6 +24,7 @@ if ($stmt->execute()) {
     echo json_encode(array("message" => "Failed to update product"));
 }
 
+// Close statement and connection
 $stmt->close();
 $conn->close();
 ?>

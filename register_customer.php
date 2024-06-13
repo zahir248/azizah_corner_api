@@ -1,18 +1,6 @@
 <?php
-
-// Assuming your database connection details
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "order"; // Replace with your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include the database connection file
+include 'db_connect.php';
 
 // Handling POST request
 $data = json_decode(file_get_contents('php://input'), true);
@@ -40,7 +28,7 @@ if (isset($data['username']) && isset($data['email']) && isset($data['password']
         // Hash the password
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        // Prepare SQL statement
+        // Prepare SQL statement for insertion
         $insert_stmt = $conn->prepare("INSERT INTO customer (username, email, password) VALUES (?, ?, ?)");
         $insert_stmt->bind_param("sss", $username, $email, $hashed_password);
 
@@ -61,7 +49,7 @@ if (isset($data['username']) && isset($data['email']) && isset($data['password']
             echo json_encode($response);
         }
 
-        // Close statement
+        // Close insert statement
         $insert_stmt->close();
     }
 
@@ -76,7 +64,6 @@ if (isset($data['username']) && isset($data['email']) && isset($data['password']
     echo json_encode($response);
 }
 
-// Close connection
+// Close database connection
 $conn->close();
-
 ?>

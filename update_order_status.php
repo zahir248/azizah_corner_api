@@ -1,16 +1,6 @@
 <?php
-$servername = "localhost"; // Change to your server name
-$username = "root"; // Change to your database username
-$password = ""; // Change to your database password
-$dbname = "order"; // Change to your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include the database connection file
+include 'db_connect.php';
 
 // Get the raw POST data
 $rawData = file_get_contents("php://input");

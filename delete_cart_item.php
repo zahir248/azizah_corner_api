@@ -1,5 +1,8 @@
 <?php
 
+// Include the database connection file
+include 'db_connect.php';
+
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Check if the cart_id and customer_id parameters exist
@@ -7,20 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Extract cart_id and customer_id from the POST parameters
         $cart_id = $_POST['cart_id'];
         $customer_id = $_POST['customer_id'];
-
-        // Database connection details
-        $servername = "localhost";
-        $username = "root"; // Replace with your MySQL username
-        $password = ""; // Replace with your MySQL password
-        $dbname = "order"; // Replace with your database name
-
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
 
         // Prepare SQL statement to delete cart item for specific customer
         $sql = "DELETE FROM cart WHERE cart_id = ? AND customer_id = ?";
@@ -48,9 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Close statement
         $stmt->close();
-
-        // Close connection
-        $conn->close();
     } else {
         // cart_id or customer_id parameter is missing
         echo json_encode(["success" => false, "message" => "cart_id or customer_id parameter is missing"]);
@@ -59,5 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Invalid request method
     echo json_encode(["success" => false, "message" => "Invalid request method"]);
 }
+
+// Close connection
+$conn->close();
 
 ?>

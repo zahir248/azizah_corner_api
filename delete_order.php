@@ -1,5 +1,8 @@
 <?php
 
+// Include the database connection file
+include 'db_connect.php';
+
 // Ensure the request method is DELETE
 if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     // Decode the JSON data sent in the request body
@@ -8,22 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     // Check if the order ID is set in the JSON data
     if (isset($input['order_id'])) {
         $order_id = $input['order_id'];
-
-        // Your database connection code (replace with your own)
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "order"; // Change this to your database name
-
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        // Check connection
-        if ($conn->connect_error) {
-            http_response_code(500); // Internal Server Error
-            echo json_encode(array('message' => 'Database connection failed: ' . $conn->connect_error));
-            exit;
-        }
 
         // Prepare SQL statement to delete order
         $sql = "DELETE FROM order_customer WHERE order_id = ?";
@@ -42,7 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
         }
 
         $stmt->close();
-        $conn->close();
     } else {
         // Order ID is not provided in the request
         http_response_code(400); // Bad Request
@@ -53,5 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     http_response_code(405); // Method Not Allowed
     echo json_encode(array('message' => 'Method not allowed.'));
 }
+
+// Close connection
+$conn->close();
 
 ?>

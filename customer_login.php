@@ -1,17 +1,7 @@
 <?php
-// Database connection settings
-$db_host = 'localhost';     // Database host (e.g., localhost)
-$db_user = 'root'; // Database username
-$db_pass = ''; // Database password
-$db_name = 'order'; // Database name
 
-// Establish database connection
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include the database connection file
+include 'db_connect.php';
 
 // Retrieve POST data sent from Flutter app
 $username = $_POST['username'];
@@ -60,4 +50,5 @@ $conn->close();
 // Send JSON response back to Flutter app
 header('Content-Type: application/json');
 echo json_encode($response);
+
 ?>

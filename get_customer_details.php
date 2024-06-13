@@ -1,4 +1,6 @@
 <?php
+// Include the database connection file
+include 'db_connect.php';
 
 // Check if the request method is GET
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -6,20 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['customer_id'])) {
         // Extract customer_id from the GET parameters
         $customer_id = $_GET['customer_id'];
-
-        // Database connection details
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "order"; // Replace with your actual database name
-
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
 
         // Prepare SQL statement to fetch customer details
         $sql = "SELECT username FROM customer WHERE customer_id = ?";
@@ -50,9 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             echo json_encode(array('error' => 'Error executing SQL statement'));
         }
 
-        // Close statement and connection
+        // Close statement (and leave the connection open for subsequent queries if needed)
         $stmt->close();
-        $conn->close();
     } else {
         // customer_id parameter is missing
         echo json_encode(array('error' => 'customer_id parameter is missing'));
@@ -62,4 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     echo json_encode(array('error' => 'Invalid request method'));
 }
 
+// Close connection
+$conn->close();
 ?>

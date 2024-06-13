@@ -1,5 +1,8 @@
 <?php
 
+// Include the database connection file
+include 'db_connect.php';
+
 // Check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Decode the JSON data sent in the request body
@@ -10,25 +13,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Extract the product ID
         $productId = $data->id;
 
-        // Your database connection code (replace with your own)
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "order";
-
-        // Create connection
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
         // SQL statement to delete a product with the given ID
-        $sql = "DELETE FROM product WHERE product_id = $productId";
+        $sql = "DELETE FROM product WHERE product_id = ?";
+
+        // Prepare the statement
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $productId);
 
         // Execute the SQL statement
-        if ($conn->query($sql) === TRUE) {
+        if ($stmt->execute()) {
             // Product deleted successfully
             echo json_encode(array("message" => "Product deleted successfully"));
         } else {
@@ -36,8 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode(array("message" => "Failed to delete product"));
         }
 
-        // Close the database connection
-        $conn->close();
+        // Close the statement
+        $stmt->close();
     } else {
         // Product ID is not set in the request
         echo json_encode(array("message" => "Product ID is required"));
@@ -46,5 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Invalid request method
     echo json_encode(array("message" => "Invalid request method"));
 }
+
+// Close the database connection
+$conn->close();
 
 ?>

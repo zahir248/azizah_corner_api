@@ -3,19 +3,8 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
-// Database credentials
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "order";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include the database connection file
+include 'db_connect.php';
 
 // SQL query to fetch orders
 $sql = "SELECT order_id, name, quantity, price, `table`, customer_name, created_at, status FROM order_customer";
@@ -34,7 +23,7 @@ if ($result->num_rows > 0) {
     // Output orders array as JSON
     echo json_encode($orders);
 } else {
-    echo "0 results";
+    echo json_encode(array("message" => "No results found"));
 }
 
 $conn->close();

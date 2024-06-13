@@ -1,17 +1,6 @@
 <?php
-// Database connection details
-$servername = "localhost";
-$username = "root"; // Replace with your MySQL username
-$password = ""; // Replace with your MySQL password
-$dbname = "order"; // Replace with your database name
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Include the database connection file
+include 'db_connect.php';
 
 // Get customer_id from the request
 $customer_id = isset($_GET['customer_id']) ? $_GET['customer_id'] : 0;
@@ -30,6 +19,7 @@ if ($result->num_rows > 0) {
         $cartItems[] = $row;
     }
 }
+
 // Convert to JSON format
 echo json_encode($cartItems);
 

@@ -1,21 +1,10 @@
 <?php
+// Include the database connection file
+include 'db_connect.php';
+
 // Retrieve the username and password from the request
 $username = $_POST['username'];
 $password = $_POST['password'];
-
-// Assuming you have a database connection
-$servername = "localhost";
-$username_db = "root";
-$password_db = "";
-$dbname = "order";
-
-// Create connection
-$conn = new mysqli($servername, $username_db, $password_db, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // Query to check if the username exists
 $sql = "SELECT * FROM user WHERE username = '$username'";
@@ -41,6 +30,6 @@ if ($result->num_rows > 0) {
     echo "Login failed";
 }
 
-
+// Close the database connection
 $conn->close();
 ?>
